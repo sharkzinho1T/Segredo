@@ -57,6 +57,36 @@ if (DATA_INICIAL) {
   }
 }
 
+// Buquê de flores: cada letra digitada vira uma flor. "Rebecca" ganha flores roxas especiais.
+const bouquetInput = document.getElementById("bouquetInput");
+const bouquet = document.getElementById("bouquet");
+const bouquetHint = document.getElementById("bouquetHint");
+const FLOWER_COLORS = ["#d9bd83","#e59bc4","#c58bd6","#f0dfb9","#9a7bb9","#e2a6d8"];
+
+function renderBouquet(){
+  const value = bouquetInput.value;
+  const isRebecca = value.trim().toLowerCase() === "rebecca";
+  bouquet.innerHTML = "";
+  bouquet.classList.toggle("bouquet-special", isRebecca);
+  let flowerIndex = 0;
+  [...value].forEach((char) => {
+    if (char.trim() === "") return;
+    const flower = document.createElement("span");
+    flower.className = "flower" + (isRebecca ? " flower-purple" : "");
+    flower.textContent = "✿";
+    flower.style.setProperty("--i", flowerIndex);
+    if (!isRebecca) flower.style.color = FLOWER_COLORS[flowerIndex % FLOWER_COLORS.length];
+    bouquet.appendChild(flower);
+    flowerIndex++;
+  });
+  bouquetHint.textContent = isRebecca
+    ? "É o seu buquê, minha Rebecca. Todo roxo, todo seu. 💜"
+    : "Dica: tente escrever Rebecca ✧";
+}
+bouquetInput.addEventListener("input", renderBouquet);
+bouquetInput.value = "Rebecca";
+renderBouquet();
+
 // Pequenos corações discretos, sem bloquear os botões.
 function makeHeart(){
   const heart = document.createElement("span");
